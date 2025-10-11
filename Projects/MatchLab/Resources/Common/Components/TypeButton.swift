@@ -16,10 +16,13 @@ struct TypeButton: View {
             print("check")
         }, label: {
             Image(imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 73, height: 73)
         })
     }
 }
 
 #Preview {
-    TypeButton(imageName: "grass")
+    TypeButton(imageName: "Ground")
 }

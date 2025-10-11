@@ -9,25 +9,37 @@ import Foundation
 import SwiftUI
 
 extension Font {
-    enum NanumSquareNeo {
-        case light
-        case regular
+    enum AppleSDGothicNeo {
+        case black
         case bold
         case extrabold
-        case heavy
+        case extraLight
+        case light
+        case medium
+        case regular
+        case semiBold
+        case thin
         
         var value: String {
             switch self {
-            case .light:
-                return "NanumSquareNeoTTF-aLt"
-            case .regular:
-                return "NanumSquareNeoTTF-bRg"
+            case .black:
+                return "AppleSDGothicNeo-Black.ttf"
             case .bold:
-                return "NanumSquareNeoTTF-cBd"
+                return "AppleSDGothicNeo-Bold.ttf"
             case .extrabold:
-                return "NanumSquareNeoTTF-dEb"
-            case .heavy:
-                return "NanumSquareNeoTTF-eHv"
+                return "AppleSDGothicNeo-ExtraBold.ttf"
+            case .extraLight:
+                return "AppleSDGothicNeo-ExtraLight.ttf"
+            case .light:
+                return "AppleSDGothicNeo-Light.ttf"
+            case .medium:
+                return "AppleSDGothicNeo-Medium.ttf"
+            case .regular:
+                return "AppleSDGothicNeo-Regular.ttf"
+            case .semiBold:
+                return "AppleSDGothicNeo-SemiBold.ttf"
+            case .thin:
+                return "AppleSDGothicNeo-Thin.ttf"
             }
         }
     }
