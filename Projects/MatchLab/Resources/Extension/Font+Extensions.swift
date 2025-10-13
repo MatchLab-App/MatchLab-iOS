@@ -44,7 +44,7 @@ extension Font {
         }
     }
     
-    static func nanumSquareNeo(type: NanumSquareNeo, size: CGFloat) -> Font {
+    static func nanumSquareNeo(type: AppleSDGothicNeo, size: CGFloat) -> Font {
         return .custom(type.value, size: size)
     }
 }
