@@ -12,13 +12,16 @@ struct HomeView: View {
     @State private var typeSelect: Bool = false
     
     var body: some View {
-        NavigationStack{
-            ZStack{
-                LinearGradient(gradient: Gradient(colors: [Color.black, Color("bottomColor")]), startPoint: .top, endPoint: .bottom)
-                    .ignoresSafeArea()
+        ZStack{
+            LinearGradient(gradient: Gradient(colors: [Color.black, Color("bottomColor")]), startPoint: .top, endPoint: .bottom)
+                .ignoresSafeArea()
+            
+            VStack {
+                NavigationBar()
+                    .padding(.bottom, 19)
+                SearchButton()
             }
         }
-        .navigationTitle(Text("Home"))
     }
 }
 
