@@ -7,6 +7,8 @@
 
 import Foundation
 
+let nameType: String = "이름으로 타입 검색"
+
 let opponentType: String = "상대 타입"
 let opponentTypeDescription: String = "1~2개를 선택하세요"
 let oppopentTypeSelect: String = "상대의 첫 번째 타입을 고르세요"
@@ -61,23 +63,31 @@ let confirmed: String = "확인했습니다"
 let welcome: String = "환영합니다!"
 let touchTheScreen: String = "화면을 터치하세요"
 
-let grass: String = "풀"
-let fire: String = "불"
-let fighting: String = "격투"
-let flying: String = "비행"
-let fairy: String = "페어리"
-let ground: String = "땅"
-let ice: String = "얼음"
-let bug: String = "벌레"
-let rock: String = "바위"
-let poison: String = "독"
-let water: String = "물"
-let dragon: String = "드래곤"
-let electric: String = "전기"
-let ghost: String = "고스트"
-let normal: String = "노말"
-let psychic: String = "에스퍼"
-let steel: String = "강철"
-let dark: String = "악"
-let noType: String = "미선택"
+enum PokemonType: String, CaseIterable, Codable {
+    case grass, fire, fighting, flying, fairy, ground, ice, bug, rock, poison
+    case water, dragon, electric, ghost, normal, psychic, steel, dark, noType
 
+    var label: String {
+        switch self {
+        case .grass: return "풀"
+        case .fire: return "불"
+        case .fighting: return "격투"
+        case .flying: return "비행"
+        case .fairy: return "페어리"
+        case .ground: return "땅"
+        case .ice: return "얼음"
+        case .bug: return "벌레"
+        case .rock: return "바위"
+        case .poison: return "독"
+        case .water: return "물"
+        case .dragon: return "드래곤"
+        case .electric: return "전기"
+        case .ghost: return "고스트"
+        case .normal: return "노말"
+        case .psychic: return "에스퍼"
+        case .steel: return "강철"
+        case .dark: return "악"
+        case .noType: return "미선택"
+        }
+    }
+}

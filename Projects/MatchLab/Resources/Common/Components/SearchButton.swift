@@ -27,9 +27,10 @@ struct SearchButton: View {
                             .padding(.leading, 19)
                             .padding(.trailing, 30)
                         
-                        Text("이름으로 타입 검색")
+                        Text(nameType)
                             .foregroundColor(.gray)
                             .font(.appleSDGothicNeo(.bold, size: 20))
+                            .lineLimit(1)
                         Spacer()
                     }
                     .frame(height: 58)
