@@ -18,23 +18,48 @@ struct HomeView: View {
             LinearGradient(gradient: Gradient(colors: [Color.black, Color("bottomColor")]), startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             
-            VStack {
-                NavigationBar()
-                    .padding(.bottom, 19)
-                SearchButton()
-                    .padding(.bottom, 41)
-                OpponentType()
-                    .padding(.bottom, 39)
-                Image("SelectedTriangle")
-                    .padding(.bottom, 11)
-                OpponentButton(selectedType1: $selectedType1, selectedType2: $selectedType2)
-                    .padding(.bottom, 40)
-                Text(oppopentTypeSelect)
-                    .foregroundStyle(Color.textGray)
-                    .font(.appleSDGothicNeo(.regular, size: 15))
-                    .padding(.bottom, 47)
-                CustomDivider()
-                Spacer()
+            if selectedType1 == .noType {
+                VStack {
+                    NavigationBar()
+                        .padding(.bottom, 19)
+                    SearchButton()
+                        .padding(.bottom, 41)
+                    OpponentType()
+                        .padding(.bottom, 39)
+                    Image("SelectedTriangle")
+                        .padding(.bottom, 11)
+                    OpponentButton(selectedType1: $selectedType1, selectedType2: $selectedType2)
+                        .padding(.bottom, 40)
+                    Text(oppopentTypeSelect)
+                        .foregroundStyle(Color.textGray)
+                        .font(.appleSDGothicNeo(.regular, size: 15))
+                        .padding(.bottom, 47)
+                    CustomDivider()
+                        .padding(.bottom, 33)
+                    
+                    TypeSelectCarousel(selectedType1: $selectedType1, selectedType2: $selectedType2)
+                    Spacer()
+                }
+            } else {
+                VStack {
+                    NavigationBar()
+                        .padding(.bottom, 19)
+                    OpponentType()
+                        .padding(.bottom, 39)
+                    Image("SelectedTriangle")
+                        .padding(.bottom, 11)
+                    OpponentButton(selectedType1: $selectedType1, selectedType2: $selectedType2)
+                        .padding(.bottom, 40)
+                    Text(oppopentTypeSelect)
+                        .foregroundStyle(Color.textGray)
+                        .font(.appleSDGothicNeo(.regular, size: 15))
+                        .padding(.bottom, 47)
+                    CustomDivider()
+                        .padding(.bottom, 33)
+                    
+                    TypeSelectCarousel(selectedType1: $selectedType1, selectedType2: $selectedType2)
+                    Spacer()
+                }
             }
         }
     }
