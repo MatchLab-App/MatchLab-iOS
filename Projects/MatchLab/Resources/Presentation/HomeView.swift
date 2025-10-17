@@ -11,7 +11,7 @@ struct HomeView: View {
     @State private var isPressed: Bool = false
     @State private var typeSelect: Bool = false
     @State private var selectedType1: PokemonType = .noType
-    @State private var selectedType2: PokemonType = .fire
+    @State private var selectedType2: PokemonType = .noType
     
     var body: some View {
         ZStack{
@@ -28,21 +28,13 @@ struct HomeView: View {
                 Image("SelectedTriangle")
                     .padding(.bottom, 11)
                 OpponentButton(selectedType1: $selectedType1, selectedType2: $selectedType2)
-                
+                    .padding(.bottom, 40)
+                Text(oppopentTypeSelect)
+                    .foregroundStyle(Color.textGray)
+                    .font(.appleSDGothicNeo(.regular, size: 15))
+                    .padding(.bottom, 47)
+                CustomDivider()
                 Spacer()
-            }
-        }
-    }
-    struct OpponentType: View {
-        var body: some View {
-            VStack(spacing: 0) {
-                Text(opponentType)
-                    .font(.appleSDGothicNeo(.bold, size: 24))
-                    .foregroundStyle(Color.white)
-                    .padding(.bottom, 8)
-                Text(opponentTypeDescription)
-                    .font(.appleSDGothicNeo(.light, size: 15))
-                    .foregroundStyle(Color.white)
             }
         }
     }

@@ -21,8 +21,8 @@ struct OpponentButton: View {
                         .glassEffect(in: .rect(cornerRadius: 11))
                         .frame(maxWidth: .infinity)
                         .frame(height: 93)
-                        .foregroundColor(.black)
-                        .opacity(0.3)
+                        .tint(Color.black)
+                        .opacity(0.1)
                         .padding(.horizontal, 122)
                     
                     HStack {

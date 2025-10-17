@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "fairy_big.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
