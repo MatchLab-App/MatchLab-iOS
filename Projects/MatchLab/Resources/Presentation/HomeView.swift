@@ -20,7 +20,7 @@ struct HomeView: View {
             
             if selectedType1 == .noType {
                 VStack {
-                    NavigationBar()
+                    NavigationBar(isSelected: .constant(selectedType1 != .noType))
                         .padding(.bottom, 19)
                     SearchButton()
                         .padding(.bottom, 41)
@@ -42,18 +42,22 @@ struct HomeView: View {
                 }
             } else {
                 VStack {
-                    NavigationBar()
-                        .padding(.bottom, 19)
+                    NavigationBar(isSelected: .constant(selectedType1 != .noType))
+                        .padding(.bottom, 40)
                     OpponentType()
                         .padding(.bottom, 39)
                     Image("SelectedTriangle")
                         .padding(.bottom, 11)
                     OpponentButton(selectedType1: $selectedType1, selectedType2: $selectedType2)
                         .padding(.bottom, 40)
-                    Text(oppopentTypeSelect)
+                    Text(opponentTypeSelect2)
                         .foregroundStyle(Color.textGray)
                         .font(.appleSDGothicNeo(.regular, size: 15))
-                        .padding(.bottom, 47)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
+                        .padding(.bottom, 30)
+                    NextButton()
+                        .padding(.bottom, 33)
                     CustomDivider()
                         .padding(.bottom, 33)
                     

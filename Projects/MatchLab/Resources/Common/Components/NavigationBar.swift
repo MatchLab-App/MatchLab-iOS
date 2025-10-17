@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct NavigationBar: View {
+    @Binding var isSelected: Bool
+    
     var body: some View {
         HStack {
-            Button(action: {}, label: {
-                Image("DropdownButton")
+            Button(action: {
+                isSelected.toggle()
+            }, label: {
+                Image(isSelected ? "Back" : "DropdownButton")
                     .resizable()
                     .scaledToFit()
                     .padding(.vertical, 13)
@@ -27,13 +31,15 @@ struct NavigationBar: View {
             
             Spacer()
             
-            Button(action: {}, label: {
+            Button(action: {
+                //TODO: 채우기
+            }, label: {
                 Image("Plane")
                     .resizable()
                     .scaledToFit()
                     .padding(.vertical, 13)
                     .padding(.horizontal, 12)
-                    .opacity(0)
+                    .opacity(isSelected ? 1 : 0)
             })
         }
         .padding(.horizontal, 30)
@@ -42,5 +48,5 @@ struct NavigationBar: View {
 }
 
 #Preview {
-    NavigationBar()
+    NavigationBar(isSelected: .constant(false))
 }
