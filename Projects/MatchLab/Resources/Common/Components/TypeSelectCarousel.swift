@@ -7,47 +7,28 @@
 
 import SwiftUI
 
-extension PokemonType {
-    var bigImageName: String {
-        switch self {
-        case .normal: return "normal_big"
-        case .bug: return "bug_big"
-        case .fairy: return "fairy_big"
-        case .grass: return "grass_big"
-        case .rock: return "rock_big"
-        case .fighting: return "fighting_big"
-        case .ghost: return "ghost_big"
-        case .psychic: return "psychic_big"
-        case .fire: return "fire_big"
-        case .water: return "water_big"
-        case .ice: return "ice_big"
-        case .flying: return "flying_big"
-        case .dark: return "dark_big"
-        case .steel: return "steel_big"
-        case .dragon: return "dragon_big"
-        case .noType: return "noType_big"
-        case .ground: return "ground_big"
-        case .poison: return "poison_big"
-        case .electric: return "electronic_big"
-        }
-    }
-}
-
 /// Single round gradient badge displaying a big type icon.
 struct TypeBadge: View {
     let type: PokemonType
     let isSelected: Bool
+    private let size: CGFloat = 73
+
     var body: some View {
         ZStack {
-            Circle()
-                .stroke(isSelected ? Color.white.opacity(0.9) : Color.clear, lineWidth: 3)
-                .shadow(color: isSelected ? Color.white : Color.clear, radius: 8)
             Image(type.bigImageName)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 80, height: 80)
+                .frame(width: size, height: size)
+
+            Circle()
+                .stroke(isSelected ? Color.white.opacity(0.9) : Color.clear, lineWidth: 3)
+                .shadow(color: isSelected ? Color.white : Color.clear, radius: 8)
+                .frame(width: size, height: size)
         }
-        .frame(width: 72)
+        .frame(width: size, height: size)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(type.label)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 }
 
@@ -63,8 +44,10 @@ private struct ItemXPreferenceKey: PreferenceKey {
 struct TypeSelectCarousel: View {
     @Binding var selectedType1: PokemonType
     @Binding var selectedType2: PokemonType
+    var selectedAttackType: PokemonType = .noType
+    var onSelect: ((PokemonType) -> Void)?
 
-    private let base: [PokemonType] = [.normal,.bug,.fairy,.grass,.rock,.fighting,.ghost,.psychic,.fire,.water,.ice,.flying,.dark,.steel,.dragon]
+    private let base: [PokemonType] = PokemonType.selectable
 
     // Repeat data 3x so we can re-center to the middle copy.
     private var looped: [PokemonType] { base + base + base }
@@ -75,15 +58,17 @@ struct TypeSelectCarousel: View {
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
-                let rows = [GridItem(.fixed(72)), GridItem(.fixed(72)), GridItem(.fixed(72))]
+                let rows = [GridItem(.fixed(73)), GridItem(.fixed(73)), GridItem(.fixed(73))]
                 HStack(alignment: .top, spacing: 0) {
                     LazyHGrid(rows: rows, spacing: 10) {
                         ForEach(Array(looped.indices), id: \.self) { idx in
                             let type = looped[idx]
                             let rowIndex = idx % 3 // 0: top, 1: middle, 2: bottom
 
-                            TypeBadge(type: type, isSelected: type == selectedType1 || type == selectedType2)
-                                .onTapGesture {
+                            Button {
+                                if let onSelect {
+                                    onSelect(type)
+                                } else {
                                     if selectedType1 == .noType {
                                         selectedType1 = type
                                     } else if selectedType2 == .noType {
@@ -93,6 +78,15 @@ struct TypeSelectCarousel: View {
                                         selectedType2 = .noType
                                     }
                                 }
+                            } label: {
+                                TypeBadge(
+                                    type: type,
+                                    isSelected: type == selectedType1
+                                    || type == selectedType2
+                                    || type == selectedAttackType
+                                )
+                            }
+                            .buttonStyle(.plain)
                                 .background(
                                     GeometryReader { geo in
                                         Color.clear.preference(key: ItemXPreferenceKey.self, value: [idx: geo.frame(in: .named("carousel")).minX])
