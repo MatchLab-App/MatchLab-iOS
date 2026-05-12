@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct SearchButton: View {
+    var action: () -> Void = {}
+
     var body: some View {
-        Button(action: {}, label: {
+        Button(action: action, label: {
             if #available(iOS 26.0, *) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 28)
@@ -52,7 +54,7 @@ struct SearchButton: View {
                             .padding(.leading, 19)
                             .padding(.trailing, 30)
                         
-                        Text("이름으로 타입 검색")
+                        Text(nameType)
                             .foregroundColor(.gray)
                             .font(.appleSDGothicNeo(.bold, size: 20))
                         Spacer()
@@ -62,6 +64,7 @@ struct SearchButton: View {
                 }
             }
         })
+        .accessibilityLabel(String(localized: "accessibility.search"))
     }
 }
 

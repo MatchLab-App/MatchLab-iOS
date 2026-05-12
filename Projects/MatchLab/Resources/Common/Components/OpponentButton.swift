@@ -39,7 +39,7 @@ struct OpponentButton: View {
                             }
                             HStack {
                                 VStack(spacing: 0) {
-                                    Image("\(selectedType1)_small")
+                                    Image(selectedType1.smallImageName)
                                         .padding(.bottom, 6)
                                     Text(selectedType1.label)
                                         .font(.appleSDGothicNeo(.bold, size: 11))
@@ -47,7 +47,7 @@ struct OpponentButton: View {
                                 }
                                 .padding(.trailing, 8)
                                 VStack(spacing: 0) {
-                                    Image("\(selectedType2)_small")
+                                    Image(selectedType2.smallImageName)
                                         .padding(.bottom, 6)
                                     Text(selectedType2.label)
                                         .font(.appleSDGothicNeo(.bold, size: 11))
@@ -74,7 +74,7 @@ struct OpponentButton: View {
                             .padding(.leading, 19)
                             .padding(.trailing, 30)
                         
-                        Text("이름으로 타입 검색")
+                        Text(nameType)
                             .foregroundColor(.gray)
                             .font(.appleSDGothicNeo(.bold, size: 20))
                         Spacer()
@@ -84,6 +84,9 @@ struct OpponentButton: View {
                 }
             }
         })
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(String(localized: "accessibility.selected.defense"))
+        .accessibilityValue([selectedType1.label, selectedType2.label].joined(separator: ", "))
     }
 }
 
