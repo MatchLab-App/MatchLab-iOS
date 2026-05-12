@@ -21,6 +21,7 @@ struct NavigationBar: View {
                     .padding(.vertical, 13)
                     .padding(.horizontal, 12)
             })
+            .accessibilityLabel(isSelected ? String(localized: "accessibility.back") : String(localized: "accessibility.menu"))
             
             Spacer()
             
@@ -28,6 +29,7 @@ struct NavigationBar: View {
                 .resizable()
                 .scaledToFit()
                 .padding(.vertical, 14)
+                .accessibilityLabel(String(localized: "accessibility.logo"))
             
             Spacer()
             
@@ -41,6 +43,7 @@ struct NavigationBar: View {
                     .padding(.horizontal, 12)
                     .opacity(isSelected ? 1 : 0)
             })
+            .accessibilityHidden(!isSelected)
         }
         .padding(.horizontal, 30)
         .frame(height: 47)
