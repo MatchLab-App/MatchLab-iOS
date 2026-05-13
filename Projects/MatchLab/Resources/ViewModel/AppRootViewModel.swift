@@ -13,6 +13,7 @@ enum MatchLabRoute {
     case home
     case search
     case settings
+    case recentResults
 }
 
 final class AppRootViewModel: ObservableObject {
@@ -45,5 +46,9 @@ final class AppRootViewModel: ObservableObject {
 
     func showSettings() {
         route = .settings
+    }
+
+    func showRecentResults() {
+        route = .recentResults
     }
 }

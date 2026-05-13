@@ -26,7 +26,8 @@ struct AppRootView: View {
                 HomeView(
                     viewModel: viewModel.homeViewModel,
                     onSearch: { viewModel.showSearch() },
-                    onSettings: { viewModel.showSettings() }
+                    onSettings: { viewModel.showSettings() },
+                    onRecentResults: { viewModel.showRecentResults() }
                 )
             case .search:
                 SearchView(
@@ -38,6 +39,11 @@ struct AppRootView: View {
                 )
             case .settings:
                 SettingsView(
+                    viewModel: viewModel.settingsViewModel,
+                    onBack: { viewModel.showHome() }
+                )
+            case .recentResults:
+                RecentResultView(
                     viewModel: viewModel.settingsViewModel,
                     onBack: { viewModel.showHome() }
                 )
