@@ -11,15 +11,19 @@ struct HomeView: View {
     @ObservedObject private var viewModel: HomeViewModel
     private let onSearch: () -> Void
     private let onSettings: () -> Void
+    private let onRecentResults: () -> Void
+    @Namespace private var cardTransitionNamespace
 
     init(
         viewModel: HomeViewModel = HomeViewModel(),
         onSearch: @escaping () -> Void = {},
-        onSettings: @escaping () -> Void = {}
+        onSettings: @escaping () -> Void = {},
+        onRecentResults: @escaping () -> Void = {}
     ) {
         self.viewModel = viewModel
         self.onSearch = onSearch
         self.onSettings = onSettings
+        self.onRecentResults = onRecentResults
     }
 
     private var primaryDefenseBinding: Binding<PokemonType> {
@@ -70,7 +74,10 @@ struct HomeView: View {
                 Spacer()
                     .frame(height: 32)
 
-                HomeTypeSelectionBlock(viewModel: viewModel)
+                HomeTypeSelectionBlock(
+                    viewModel: viewModel,
+                    cardTransitionNamespace: cardTransitionNamespace
+                )
 
                 Text(viewModel.prompt)
                     .font(.appleSDGothicNeo(.semiBold, size: 15))
@@ -121,6 +128,10 @@ struct HomeView: View {
                     onSettings: {
                         viewModel.isMenuPresented = false
                         onSettings()
+                    },
+                    onRecentResults: {
+                        viewModel.isMenuPresented = false
+                        onRecentResults()
                     }
                 )
                 .transition(.opacity)
@@ -171,46 +182,48 @@ private struct HomeTitleBlock: View {
 
 private struct HomeTypeSelectionBlock: View {
     @ObservedObject var viewModel: HomeViewModel
+    let cardTransitionNamespace: Namespace.ID
 
     var body: some View {
         VStack(spacing: 11) {
             if viewModel.step == .selectFirstOpponentType || viewModel.step == .selectSecondOpponentType {
-                Image("SelectedTriangle")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 17, height: 13)
-                    .accessibilityHidden(true)
-
-                TypeSelectionCard(
-                    title: L10n.defense,
-                    types: [viewModel.primaryDefenseType, viewModel.secondaryDefenseType],
-                    width: 158,
-                    accessibilityLabel: String(localized: "accessibility.selected.defense")
-                )
+                defenseCard
             } else {
                 HStack(spacing: 27) {
-                    TypeSelectionCard(
-                        title: L10n.defense,
-                        types: [viewModel.primaryDefenseType, viewModel.secondaryDefenseType],
-                        width: 158,
-                        accessibilityLabel: String(localized: "accessibility.selected.defense")
-                    )
+                    defenseCard
 
                     VStack(spacing: 11) {
-                        Image("SelectedTriangle")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 17, height: 13)
-                            .accessibilityHidden(true)
-
                         TypeSelectionCard(
                             title: L10n.attack,
                             types: [viewModel.selectedAttackType],
                             width: 100,
-                            accessibilityLabel: String(localized: "accessibility.selected.attack")
+                            accessibilityLabel: String(localized: "accessibility.selected.attack"),
+                            isHighlighted: viewModel.step == .selectAttackType || viewModel.step == .result
                         )
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .trailing).combined(with: .opacity),
+                            removal: .move(edge: .leading).combined(with: .opacity)
+                        ))
                     }
                 }
+            }
+        }
+        .animation(.spring(response: 0.35, dampingFraction: 0.86), value: viewModel.step)
+    }
+
+    private var defenseCard: some View {
+        TypeSelectionCard(
+            title: L10n.defense,
+            types: [viewModel.primaryDefenseType, viewModel.secondaryDefenseType],
+            width: 158,
+            accessibilityLabel: String(localized: "accessibility.selected.defense"),
+            isHighlighted: viewModel.step == .selectFirstOpponentType || viewModel.step == .selectSecondOpponentType
+        )
+        .matchedGeometryEffect(id: "defense-card", in: cardTransitionNamespace)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if viewModel.step == .selectAttackType || viewModel.step == .result {
+                viewModel.editDefenseSelection()
             }
         }
     }
@@ -220,6 +233,7 @@ private struct HomeMenuOverlay: View {
     let onClose: () -> Void
     let onSearch: () -> Void
     let onSettings: () -> Void
+    let onRecentResults: () -> Void
 
     var body: some View {
         ZStack {
@@ -235,12 +249,14 @@ private struct HomeMenuOverlay: View {
 
                 SearchButton(action: onSearch)
                     .padding(.top, 16)
+                    .opacity(0)
+                    .allowsHitTesting(false)
 
                 VStack(spacing: 20) {
                     MenuActionRow(
                         title: L10n.currentRecords,
                         systemImageName: "clock.arrow.circlepath",
-                        action: {}
+                        action: onRecentResults
                     )
 
                     MenuActionRow(
@@ -260,8 +276,6 @@ private struct HomeMenuOverlay: View {
 
                 Spacer()
 
-                HomeIndicator()
-                    .padding(.bottom, 5)
             }
         }
     }

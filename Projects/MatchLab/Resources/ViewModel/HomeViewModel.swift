@@ -8,6 +8,13 @@
 import Foundation
 import SwiftUI
 
+struct RecentMatchRecord: Codable {
+    let defenseTypes: [PokemonType]
+    let attackType: PokemonType
+    let multiplier: Double
+    let createdAt: Date
+}
+
 enum HomeStep {
     case selectFirstOpponentType
     case selectSecondOpponentType
@@ -47,6 +54,12 @@ struct EffectivenessSummary {
 }
 
 final class HomeViewModel: ObservableObject {
+    private enum StorageKey {
+        static let recentRecords = "matchlab.recent.records"
+    }
+
+    private let maxRecentRecordCount = 50
+
     @Published var step: HomeStep = .selectFirstOpponentType
     @Published var selectedDefenseTypes: [PokemonType] = []
     @Published var selectedAttackType: PokemonType = .noType
@@ -140,6 +153,7 @@ final class HomeViewModel: ObservableObject {
         case .selectAttackType, .result:
             selectedAttackType = type
             step = .result
+            saveRecentRecord()
         }
     }
 
@@ -195,10 +209,50 @@ final class HomeViewModel: ObservableObject {
         }
     }
 
+    func editDefenseSelection() {
+        selectedAttackType = .noType
+        if selectedDefenseTypes.isEmpty {
+            step = .selectFirstOpponentType
+        } else {
+            step = .selectSecondOpponentType
+        }
+    }
+
     func reset() {
         selectedDefenseTypes.removeAll()
         selectedAttackType = .noType
         step = .selectFirstOpponentType
         isMenuPresented = false
+    }
+
+    private func saveRecentRecord() {
+        let defense = selectedDefenseTypes.filter { $0 != .noType }
+        guard !defense.isEmpty, selectedAttackType != .noType else { return }
+
+        let record = RecentMatchRecord(
+            defenseTypes: defense,
+            attackType: selectedAttackType,
+            multiplier: effectivenessSummary.multiplier,
+            createdAt: Date()
+        )
+
+        let decoder = JSONDecoder()
+        let encoder = JSONEncoder()
+        let defaults = UserDefaults.standard
+
+        var records: [RecentMatchRecord] = []
+        if let savedData = defaults.data(forKey: StorageKey.recentRecords),
+           let decoded = try? decoder.decode([RecentMatchRecord].self, from: savedData) {
+            records = decoded
+        }
+
+        records.insert(record, at: 0)
+        if records.count > maxRecentRecordCount {
+            records = Array(records.prefix(maxRecentRecordCount))
+        }
+
+        if let encoded = try? encoder.encode(records) {
+            defaults.set(encoded, forKey: StorageKey.recentRecords)
+        }
     }
 }
