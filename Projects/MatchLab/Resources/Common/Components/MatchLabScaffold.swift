@@ -179,6 +179,7 @@ struct TypeSelectionCard: View {
     let types: [PokemonType]
     var width: CGFloat = 158
     var accessibilityLabel: String
+    var isHighlighted: Bool = false
 
     private var paddedTypes: [PokemonType] {
         let usable = Array(types.prefix(width > 120 ? 2 : 1))
@@ -218,6 +219,12 @@ struct TypeSelectionCard: View {
         .overlay(
             RoundedRectangle(cornerRadius: 11)
                 .stroke(Color.white.opacity(0.14), lineWidth: 1)
+        )
+        .shadow(
+            color: isHighlighted ? Color.white.opacity(0.55) : .clear,
+            radius: isHighlighted ? 14 : 0,
+            x: 0,
+            y: 0
         )
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
