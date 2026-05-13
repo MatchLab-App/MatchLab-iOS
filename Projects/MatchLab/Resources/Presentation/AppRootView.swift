@@ -44,7 +44,7 @@ struct AppRootView: View {
                 )
             case .recentResults:
                 RecentResultView(
-                    viewModel: viewModel.settingsViewModel,
+                    viewModel: viewModel.recentResultViewModel,
                     onBack: { viewModel.showHome() }
                 )
             }

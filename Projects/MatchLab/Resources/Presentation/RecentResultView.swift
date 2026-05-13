@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecentResultView: View {
-    @ObservedObject var viewModel: SettingsViewModel
+    @ObservedObject var viewModel: RecentResultViewModel
     let onBack: () -> Void
 
     var body: some View {
@@ -140,5 +140,5 @@ private struct RecentRecordRow: View {
 }
 
 #Preview {
-    RecentResultView(viewModel: SettingsViewModel(), onBack: {})
+    RecentResultView(viewModel: RecentResultViewModel(), onBack: {})
 }

@@ -22,6 +22,7 @@ final class AppRootViewModel: ObservableObject {
     let homeViewModel = HomeViewModel()
     let searchViewModel = SearchViewModel()
     let settingsViewModel = SettingsViewModel()
+    let recentResultViewModel = RecentResultViewModel()
 
     func start() {
         route = .notice
