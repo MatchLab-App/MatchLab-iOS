@@ -48,10 +48,11 @@ struct TypeSelectCarousel: View {
     var onSelect: ((PokemonType) -> Void)?
 
     private let base: [PokemonType] = PokemonType.selectable
+    private let loopCopies: Int = 9
 
-    // Repeat data 3x so we can re-center to the middle copy.
-    private var looped: [PokemonType] { base + base + base }
-    private var middleStart: Int { base.count } // first index of the middle copy
+    // Repeat data 여러 번 복제해 스크롤 여유를 크게 확보하고, 중앙 복사본으로 재센터링한다.
+    private var looped: [PokemonType] { Array(repeating: base, count: loopCopies).flatMap { $0 } }
+    private var middleStart: Int { (loopCopies / 2) * base.count }
 
     @State private var currentIndex: Int = 0
 
@@ -123,15 +124,16 @@ struct TypeSelectCarousel: View {
                 // When we approach edges, recenter to the equivalent index in the middle copy to create an infinite effect.
                 let n = base.count
                 let total = looped.count
-                let leftEdge = n / 2
-                let rightEdge = total - n / 2 - 1
+                let safeMargin = n
+                let leftEdge = safeMargin
+                let rightEdge = total - safeMargin - 1
 
                 if newValue <= leftEdge {
-                    let target = newValue + n
+                    let target = middleStart + (newValue % n)
                     withoutAnimation { proxy.scrollTo(target, anchor: .center) }
                     currentIndex = target
                 } else if newValue >= rightEdge {
-                    let target = newValue - n
+                    let target = middleStart + (newValue % n)
                     withoutAnimation { proxy.scrollTo(target, anchor: .center) }
                     currentIndex = target
                 }
@@ -149,7 +151,7 @@ struct TypeSelectCarousel: View {
 }
 
 #Preview {
-    @State var type1: PokemonType = .noType
-    @State var type2: PokemonType = .noType
+    @Previewable @State var type1: PokemonType = .noType
+    @Previewable @State var type2: PokemonType = .noType
     TypeSelectCarousel(selectedType1: $type1, selectedType2: $type2)
 }
