@@ -53,8 +53,6 @@ struct NoticeView: View {
                 .padding(.horizontal, 46)
                 .padding(.bottom, 38)
 
-                HomeIndicator()
-                    .padding(.bottom, 5)
             }
         }
     }
