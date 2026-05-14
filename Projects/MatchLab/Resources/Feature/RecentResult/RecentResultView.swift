@@ -39,7 +39,7 @@ struct RecentResultView: View {
                         .foregroundStyle(.white.opacity(0.75))
                         .padding(.leading, 20)
 
-                    RecentRecordsCard(records: viewModel.recentRecords)
+                    RecentRecordsList(records: viewModel.recentRecords)
                 }
                 .padding(.horizontal, 30)
                 .padding(.top, 16)
@@ -53,32 +53,26 @@ struct RecentResultView: View {
     }
 }
 
-private struct RecentRecordsCard: View {
+private struct RecentRecordsList: View {
     let records: [RecentMatchRecord]
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             if records.isEmpty {
-                Text("-")
-                    .font(.appleSDGothicNeo(.semiBold, size: 15))
-                    .foregroundStyle(.white.opacity(0.6))
+                RoundedRectangle(cornerRadius: 17)
+                    .fill(Color.white.opacity(0.1))
+                    .overlay(
+                        Text("-")
+                            .font(.appleSDGothicNeo(.semiBold, size: 15))
+                            .foregroundStyle(.white.opacity(0.6))
+                    )
+                    .frame(height: 72)
             } else {
                 ForEach(Array(records.prefix(5).enumerated()), id: \.offset) { _, record in
                     RecentRecordRow(record: record)
                 }
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, 13)
-        .padding(.vertical, 13)
-        .background(
-            RoundedRectangle(cornerRadius: 28)
-                .fill(Color.white.opacity(0.1))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 28)
-                .stroke(Color.white.opacity(0.14), lineWidth: 1)
-        )
     }
 }
 

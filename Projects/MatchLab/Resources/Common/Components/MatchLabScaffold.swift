@@ -222,7 +222,7 @@ struct TypeSelectionCard: View {
         )
         .shadow(
             color: isHighlighted ? Color.white.opacity(0.55) : .clear,
-            radius: isHighlighted ? 14 : 0,
+            radius: isHighlighted ? 8 : 0,
             x: 0,
             y: 0
         )
