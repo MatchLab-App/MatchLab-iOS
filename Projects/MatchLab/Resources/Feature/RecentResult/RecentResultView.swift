@@ -71,6 +71,18 @@ private struct RecentRecordsList: View {
                 ForEach(Array(records.prefix(5).enumerated()), id: \.offset) { _, record in
                     RecentRecordRow(record: record)
                 }
+                ForEach(Array(records.prefix(5).enumerated()), id: \.offset) { _, record in
+                    RecentRecordRow(record: record)
+                }
+                ForEach(Array(records.prefix(5).enumerated()), id: \.offset) { _, record in
+                    RecentRecordRow(record: record)
+                }
+                ForEach(Array(records.prefix(5).enumerated()), id: \.offset) { _, record in
+                    RecentRecordRow(record: record)
+                }
+                ForEach(Array(records.prefix(5).enumerated()), id: \.offset) { _, record in
+                    RecentRecordRow(record: record)
+                }
             }
         }
     }
