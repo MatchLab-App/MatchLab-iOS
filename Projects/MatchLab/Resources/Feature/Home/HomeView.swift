@@ -70,6 +70,7 @@ struct HomeView: View {
                 }
 
                 HomeTitleBlock(viewModel: viewModel)
+                    .padding(.top, 24)
 
                 Spacer()
                     .frame(height: 32)
@@ -102,7 +103,8 @@ struct HomeView: View {
 
                 CustomDivider()
                     .padding(.top, viewModel.step == .selectFirstOpponentType ? 47 : 33)
-                    .padding(.bottom, 33)
+                    .padding(.bottom, 60)
+                    .padding(.top,10)
 
                 TypeSelectCarousel(
                     selectedType1: primaryDefenseBinding,
